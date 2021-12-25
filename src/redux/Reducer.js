@@ -7,7 +7,7 @@ const stateUser = {
 }
 
 const baseUrlBE = {
-    url:"http://7334-139-192-225-19.ngrok.io",
+    url:"http://77f5-103-130-128-141.ngrok.io",
 }
 
 function LoginReducer(state=stateUser,action){

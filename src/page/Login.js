@@ -31,10 +31,14 @@ class Login extends Component {
                 this.props.LoginAction(data.jwttoken,"token")
                 this.props.LoginAction(this.props.route.params,"role")
                 console.log(data.jwttoken)
-                this.props.navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Menu Awal Dosen' }],
-                  })
+                if(this.props.route.params == "dosen"){
+                    this.props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Menu Awal Dosen' }],
+                      })
+                }else{
+                    console.log("mahasiswa")
+                }
             }else{
                 Alert.alert("login gagal")
             }
@@ -42,6 +46,9 @@ class Login extends Component {
             if (error.response) {
                 if(error.response.status == 401){
                     Alert.alert("User Unauthorized")
+                }else if(error.response.status == 500){
+
+                    Alert.alert("User Not Found")
                 }
             //   console.log(error.response.data.error);
             //   console.log(error.response.status);
