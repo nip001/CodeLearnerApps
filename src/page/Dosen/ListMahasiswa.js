@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
-import PropTypes from 'prop-types'
+import { View, Text, FlatList, Image, TouchableOpacity, BackHandler } from 'react-native'
 import { connect } from 'react-redux'
 import axios from 'axios';
 import { stylesEksternal } from '../../style/style';
@@ -16,6 +15,15 @@ export class ListMahasiswa extends Component {
 
     componentDidMount(){
         this.getDaftarMahasiswa();
+        BackHandler.addEventListener('hardwareBackPress',()=>{
+            this.props.navigation.goBack()
+            return true});
+    }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', ()=>{
+            this.props.navigation.goBack()
+            return true});
     }
 
     getDaftarMahasiswa(){

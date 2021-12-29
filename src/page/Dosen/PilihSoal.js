@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList } from 'react-native'
-import PropTypes from 'prop-types'
+import { View, Text, FlatList, TouchableOpacity, BackHandler } from 'react-native'
 import { connect } from 'react-redux'
 import axios from 'axios';
 import { stylesEksternal } from '../../style/style';
+import { DataRefreshAction } from '../../redux/Action';
 
 export class PilihSoal extends Component {
 
@@ -18,6 +18,13 @@ export class PilihSoal extends Component {
 
     componentDidMount(){
         this.getHasilLatihan()
+        BackHandler.addEventListener('hardwareBackPress',()=>{this.props.navigation.goBack()
+            return true});
+    }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', ()=>{this.props.navigation.goBack()
+            return true});
     }
 
     getHasilLatihan(){
@@ -50,16 +57,21 @@ export class PilihSoal extends Component {
                         data={this.state.hasilLatihan}
                         keyExtractor={item=>item.idHasil}
                         renderItem={({item})=>(
-                             <View style={(item.status==="SUCCESS")?stylesEksternal.listData:stylesEksternal.listDataError}>
-                                <View style={{flexDirection:"column"}}>
+                            <TouchableOpacity onPress={()=>{
+                                this.props.DataRefreshAction(item,"hasilLatihan")
+                                this.props.navigation.navigate("Hasil Latihan")
+                                }}>
+                                <View style={(item.status==="SUCCESS")?stylesEksternal.listData:stylesEksternal.listDataError}>
+                                    <View style={{flexDirection:"column"}}>
 
-                                    {/*nama mahasiswa*/}
-                                    <Text style={(item.status==="SUCCESS")?{paddingLeft:20}:{paddingLeft:20,color:"white"}}>Task : {item.idSoal.judulSoal}</Text> 
+                                        {/*nama mahasiswa*/}
+                                        <Text style={(item.status==="SUCCESS")?{paddingLeft:20}:{paddingLeft:20,color:"white"}}>Task : {item.idSoal.judulSoal}</Text> 
 
-                                    {/*Tanggal Hasil*/}
-                                    <Text style={(item.status==="SUCCESS")?{paddingLeft:20}:{paddingLeft:20,color:"white"}}>Status : {item.status}</Text> 
+                                        {/*Tanggal Hasil*/}
+                                        <Text style={(item.status==="SUCCESS")?{paddingLeft:20}:{paddingLeft:20,color:"white"}}>Status : {item.status}</Text> 
+                                    </View>
                                 </View>
-                             </View>
+                             </TouchableOpacity>
                         )}
                     />
             </View>
@@ -73,7 +85,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    
+    DataRefreshAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PilihSoal)

@@ -6,8 +6,12 @@ const stateUser = {
     role:""
 }
 
+const stateDataRefresh = {
+    hasilLatihan:{}
+}
+
 const baseUrlBE = {
-    url:"http://77f5-103-130-128-141.ngrok.io",
+    url:"http://3849-139-192-225-19.ngrok.io",
 }
 
 function LoginReducer(state=stateUser,action){
@@ -30,9 +34,20 @@ function URLReducer(state=baseUrlBE,action){
     return state
 }
 
+function DataRefreshReducer(state=stateDataRefresh,action){
+    if(action.type === 'SET_DATA'){
+        return({
+            ...state,
+            [action.inputType]:action.inputValue
+        })
+    }
+    return state
+}
+
 const Reducer = combineReducers({
     LoginReducer,
-    URLReducer
+    URLReducer,
+    DataRefreshReducer
 })
 
 export default Reducer

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 import React, { Component } from 'react'
 import { View, Text, Image, BackHandler, Alert } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,46 +11,30 @@ export class MenuAwalDosen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataHasilLatihan:{}
+            dataHasilLatihan:{},
+            isDataFound:false
         }
     }
 
-    
-    // onBackPress = () => {
- 
-    //     //Code to display alert message when use click on android device back button.
-    //     Alert.alert(
-    //       ' Exit From App ',
-    //       ' Do you want to exit From App ?',
-    //       [
-    //         { text: 'Yes', onPress: () => BackHandler.exitApp() },
-    //         { text: 'No', onPress: () => console.log('NO Pressed') }
-    //       ],
-    //       { cancelable: false },
-    //     );
-     
-    //     // Return true to enable back button over ride.
-    //     return true;
-    //   }
-
     componentDidMount(){
         this.getHasilLatihan();
-        // BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-
     }
 
-    componentWillUnmount(){
-        // BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-    }
+    
 
     getHasilLatihan(){
-        axios.get(this.props.baseURL+'/hasillatihan/',
+        axios.get(this.props.baseURL+'/hasillatihan/mahasiswa/',
         {
             headers: { Authorization: `Bearer ${this.props.token}` }
         })
         .then((response)=>{
             let data =response.data
-            this.setState({dataHasilLatihan:data})
+            if(!_.isEmpty(data)){
+                this.setState({
+                    dataHasilLatihan:data,
+                    isDataFound:true
+                })    
+            }
         })
         .catch((error)=>{
             console.log(error)
@@ -59,7 +44,7 @@ export class MenuAwalDosen extends Component {
     render() {
         return (
             <View>
-                {this.state.dataHasilLatihan !==null ?(
+                {this.state.isDataFound ?(
                     <FlatList
                         data={this.state.dataHasilLatihan}
                         keyExtractor={item=>item.idHasil}

@@ -13,6 +13,15 @@ export const stylesEksternal = StyleSheet.create({
         padding: 10,
         
     },
+    buttonError: {
+        
+        marginTop:30,
+        backgroundColor:"#614E4E",
+        marginLeft: 30,
+        marginRight: 30,
+        padding: 10,
+        
+    },
     listData: {
         flexDirection:"row",
         marginTop:30,

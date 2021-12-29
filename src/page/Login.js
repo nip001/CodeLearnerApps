@@ -37,7 +37,10 @@ class Login extends Component {
                         routes: [{ name: 'Menu Awal Dosen' }],
                       })
                 }else{
-                    console.log("mahasiswa")
+                    this.props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Menu Awal Mahasiswa' }],
+                      })
                 }
             }else{
                 Alert.alert("login gagal")

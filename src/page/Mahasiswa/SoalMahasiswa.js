@@ -25,7 +25,7 @@ export class SoalDosen extends Component {
             return true});
     }
     getSoal(){
-        axios.get(this.props.baseURL+'/soal/',
+        axios.get(this.props.baseURL+'/soal/mahasiswa/',
         {
             headers: { Authorization: `Bearer ${this.props.token}` }
         })
@@ -41,11 +41,6 @@ export class SoalDosen extends Component {
     render() {
         return (
             <View>
-                <TouchableOpacity style={stylesEksternal.button}
-                            onPress={() => {this.props.navigation.navigate("Tambah Soal Dosen")}}
-                >
-                    <Text style={{color:"white",alignSelf:"center"}}>Tambahkan Soal</Text>
-                </TouchableOpacity>
                 <FlatList
                     data={this.state.dataSoal}
                     keyExtractor={item=>item.idSoal}

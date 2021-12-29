@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, BackHandler } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { stylesEksternal } from '../../style/style'
@@ -15,6 +15,17 @@ export class TambahSoalDosen extends Component {
             deskripsi:"",
             output:"",
         }
+    }
+
+    componentDidMount(){
+        
+        BackHandler.addEventListener('hardwareBackPress',()=>{this.props.navigation.goBack()
+            return true});
+    }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', ()=>{this.props.navigation.goBack()
+            return true});
     }
 
     submitHandler(){

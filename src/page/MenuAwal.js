@@ -1,7 +1,33 @@
 import React, { Component } from 'react'
-import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, BackHandler, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 class MenuAwal extends Component {
+    onBackPress = () => {
+ 
+        //Code to display alert message when use click on android device back button.
+        Alert.alert(
+          ' Exit From App ',
+          ' Do you want to exit From App ?',
+          [
+            { text: 'Yes', onPress: () => BackHandler.exitApp() },
+            { text: 'No', onPress: () => console.log('NO Pressed') }
+          ],
+          { cancelable: false },
+        );
+     
+        // Return true to enable back button over ride.
+        return true;
+      }
+
+    componentDidMount(){
+        
+        BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+    }
+
     render() {
         return (
             <View>
