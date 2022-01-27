@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { View, Text, Image, BackHandler, Alert } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux'
+import { DataRefreshAction } from '../../redux/Action';
 import { stylesEksternal } from '../../style/style';
 
 export class MenuAwalDosen extends Component {
@@ -30,6 +31,7 @@ export class MenuAwalDosen extends Component {
         .then((response)=>{
             let data =response.data
             if(!_.isEmpty(data)){
+                this.props.DataRefreshAction(data,"hasillatihan")
                 this.setState({
                     dataHasilLatihan:data,
                     isDataFound:true
@@ -84,7 +86,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    
+    DataRefreshAction,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuAwalDosen)

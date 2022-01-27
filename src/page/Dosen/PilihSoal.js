@@ -11,24 +11,50 @@ export class PilihSoal extends Component {
         super(props);
         this.state = {
             dataSoal:[],
-            mahasiswa:this.props.route.params.mahasiswa,
+            // mahasiswa:{},
             hasilLatihan:{}
         }
     }
 
-    componentDidMount(){
-        this.getHasilLatihan()
-        BackHandler.addEventListener('hardwareBackPress',()=>{this.props.navigation.goBack()
+    componentWillUnmount(){
+        
+        BackHandler.removeEventListener('hardwareBackPress',()=>{
+            this.setState({
+                dataSoal:[],
+                // mahasiswa:{},
+                hasilLatihan:{}
+            })
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'List Mahasiswa' }],
+              })
             return true});
+            
     }
 
-    componentWillUnmount(){
-        BackHandler.removeEventListener('hardwareBackPress', ()=>{this.props.navigation.goBack()
+    componentDidMount(){
+        // this.setState({mahasiswa:this.props.route.params.mahasiswa
+        // })
+        this.getHasilLatihan()
+        
+        BackHandler.addEventListener('hardwareBackPress',()=>{
+            this.setState({
+                dataSoal:[],
+                mahasiswa:{},
+                hasilLatihan:{}
+            })
+            
+            this.props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'List Mahasiswa' }],
+              })
             return true});
+        
     }
+
 
     getHasilLatihan(){
-        axios.get(this.props.baseURL+'/hasillatihan/'+this.state.mahasiswa.idMahasiswa,
+        axios.get(this.props.baseURL+'/hasillatihan/'+this.props.route.params.mahasiswa.idMahasiswa,
         {
             headers: { Authorization: `Bearer ${this.props.token}` }
         })
@@ -50,8 +76,8 @@ export class PilihSoal extends Component {
     render() {
         return (
             <View>
-                    <Text style={{marginTop:20,fontSize:30,alignSelf:'center'}}> {this.state.mahasiswa.namaMahasiswa} </Text>
-                    <Text style={{color:"#9D9D9D",fontSize:20,alignSelf:'center'}}> ID : {this.state.mahasiswa.idMahasiswa} </Text>
+                    <Text style={{marginTop:20,fontSize:30,alignSelf:'center'}}> {this.props.route.params.mahasiswa.namaMahasiswa} </Text>
+                    <Text style={{color:"#9D9D9D",fontSize:20,alignSelf:'center'}}> ID : {this.props.route.params.mahasiswa.idMahasiswa} </Text>
                     
                     <FlatList
                         data={this.state.hasilLatihan}

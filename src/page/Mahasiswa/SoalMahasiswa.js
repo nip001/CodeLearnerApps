@@ -4,23 +4,26 @@ import { connect } from 'react-redux'
 import { stylesEksternal } from '../../style/style'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import axios from 'axios'
+import _ from 'lodash'
 
 export class SoalDosen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dataSoal:{},
+            dataSoal:[],
         }
     }
 
     componentDidMount(){
+        this.setState({dataSoal:[]})
         this.getSoal();
         BackHandler.addEventListener('hardwareBackPress',()=>{this.props.navigation.goBack()
             return true});
     }
 
     componentWillUnmount(){
+        this.setState({dataSoal:[]})
         BackHandler.removeEventListener('hardwareBackPress', ()=>{this.props.navigation.goBack()
             return true});
     }
@@ -31,6 +34,20 @@ export class SoalDosen extends Component {
         })
         .then((response)=>{
             let data =response.data
+            let index= 1;
+            this.setState({dataSoal:data})
+            // console.log("=====================data========================")
+            // console.log(data)
+            this.props.hasillatihan.forEach(element => {
+                // console.log(this.state.dataSoal)
+                data.splice(element.idSoal.idSoal-index,1)
+                // this.setState({dataSoal:[...this.state.dataSoal.splice(element.idSoal.idSoal,1)]})
+                // if(index===0){
+                //     index++;
+                // }
+                // console.log(element.idSoal.idSoal-index)
+                index++;
+            });
             this.setState({dataSoal:data})
         })
         .catch((error)=>{
@@ -45,6 +62,7 @@ export class SoalDosen extends Component {
                     data={this.state.dataSoal}
                     keyExtractor={item=>item.idSoal}
                     renderItem={({item})=>(
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Isi Soal",item)}}>
                              <View style={stylesEksternal.listData}>
                                 <View style={{flexDirection:"column"}}>
 
@@ -55,6 +73,7 @@ export class SoalDosen extends Component {
                                     <Text style={{paddingLeft:20}}>Tanggal Buat : {item.tanggalSoal}</Text> 
                                 </View>
                              </View>
+                        </TouchableOpacity>
                     )}
                 />
             </View>
@@ -64,7 +83,8 @@ export class SoalDosen extends Component {
 
 const mapStateToProps = (state) => ({
     baseURL:state.URLReducer.url,
-    token:state.LoginReducer.token
+    token:state.LoginReducer.token,
+    hasillatihan:state.DataRefreshReducer.hasillatihan
 })
 
 const mapDispatchToProps = {

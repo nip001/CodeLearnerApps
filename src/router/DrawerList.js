@@ -12,6 +12,9 @@ import HasilLatihan from '../page/Dosen/HasilLatihan';
 import MenuAwalMahasiswa from '../page/Mahasiswa/MenuAwalMahasiswa';
 import { View } from 'react-native';
 import SoalMahasiswa from '../page/Mahasiswa/SoalMahasiswa';
+import IsiSoal from '../page/Mahasiswa/IsiSoal';
+import ListDosen from '../page/Mahasiswa/ListDosen';
+import TambahDosen from '../page/Mahasiswa/TambahDosen';
 
 const Drawer = createDrawerNavigator();
 
@@ -112,6 +115,35 @@ export class DrawerList extends Component {
                             swipeEnabled:true}}
                         name="Soal Mahasiswa" 
                         component={SoalMahasiswa} />
+
+                      <Drawer.Screen 
+                        options={{headerShown: true,
+                            
+                            drawerLabel:"List Dosen",
+                            headerTitle:"List Dosen",
+                            swipeEnabled:true}}
+                        name="List Dosen" 
+                        component={ListDosen} />
+
+                      <Drawer.Screen 
+                        options={{headerShown: true,
+                            
+                            drawerItemStyle:{ height: 0 },
+                            headerTitle:"Tambah Dosen",
+                            swipeEnabled:true}}
+                        name="Tambah Dosen" 
+                        component={TambahDosen} />
+
+
+
+                      <Drawer.Screen 
+                        options={{headerShown: true,
+                            
+                            drawerItemStyle:{ height: 0 },
+                            headerTitle:"Soal",
+                            swipeEnabled:true}}
+                        name="Isi Soal" 
+                        component={IsiSoal} />
 
                     {/* END MAHASISWA MENU  */}
                   </>

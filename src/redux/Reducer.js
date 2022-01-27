@@ -7,11 +7,12 @@ const stateUser = {
 }
 
 const stateDataRefresh = {
-    hasilLatihan:{}
+    hasilLatihan:{},
+    soal:{}
 }
 
 const baseUrlBE = {
-    url:"http://3849-139-192-225-19.ngrok.io",
+    url:"http://5cda-139-192-156-157.ngrok.io",
 }
 
 function LoginReducer(state=stateUser,action){
