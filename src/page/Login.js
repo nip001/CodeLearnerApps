@@ -29,6 +29,9 @@ class Login extends Component {
             if(data !== ""){
                 this.props.LoginAction(this.state.username,"username")
                 this.props.LoginAction(data.jwttoken,"token")
+                this.props.LoginAction(data.namaUser,"nama")
+                this.props.LoginAction(data.idUser,"iduser")
+                this.props.LoginAction(data.fotoUser,"fotouser")
                 this.props.LoginAction(this.props.route.params,"role")
                 console.log(data.jwttoken)
                 if(this.props.route.params == "dosen"){
@@ -83,6 +86,10 @@ class Login extends Component {
                     onPress={()=>{this.loginHandler()}}
                 >
                     <Text style={{color:"white",alignSelf:"center"}}>Login</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{ marginTop:20,flexDirection:"row-reverse",margin:10 }} onPress={()=>{this.props.navigation.navigate("Register",this.props.route.params)}}>
+                    <Text >Daftar Akun</Text>
                 </TouchableOpacity>
                 {/* <Text> {this.props.route.params} </Text> */}
             </View>

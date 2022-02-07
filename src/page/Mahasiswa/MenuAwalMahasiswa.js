@@ -13,7 +13,8 @@ export class MenuAwalDosen extends Component {
         super(props);
         this.state = {
             dataHasilLatihan:{},
-            isDataFound:false
+            isDataFound:false,
+            score:0
         }
     }
 
@@ -31,11 +32,21 @@ export class MenuAwalDosen extends Component {
         .then((response)=>{
             let data =response.data
             if(!_.isEmpty(data)){
+                let pengurangan = 100/data.length
+                let nilai = 100 
+                for (let index = 0; index < data.length; index++) {
+                    if(data[index].status === "ERROR"){
+                        nilai -= pengurangan
+                    }
+                }
                 this.props.DataRefreshAction(data,"hasillatihan")
                 this.setState({
                     dataHasilLatihan:data,
-                    isDataFound:true
+                    isDataFound:true,
+                    score:nilai.toFixed(2)
                 })    
+            }else{
+                this.props.DataRefreshAction([],"hasillatihan")
             }
         })
         .catch((error)=>{
@@ -47,6 +58,8 @@ export class MenuAwalDosen extends Component {
         return (
             <View>
                 {this.state.isDataFound ?(
+                    <View>
+                    <Text style={{marginTop:20,fontSize:13, textAlign: 'center'}}> Persentase Keberhasilan kamu adalah {this.state.score}% dari 100%</Text>
                     <FlatList
                         data={this.state.dataHasilLatihan}
                         keyExtractor={item=>item.idHasil}
@@ -71,7 +84,7 @@ export class MenuAwalDosen extends Component {
                                 </View>
                             </TouchableOpacity>
                         )}
-                    />
+                    /></View>
                 ):(
                     <Text style={{alignSelf:'center',marginTop:30,fontSize:15}}>------ No Data Found ------</Text>   
                 )}

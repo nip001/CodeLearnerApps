@@ -1,4 +1,4 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import Logout from '../page/Logout';
@@ -10,18 +10,53 @@ import ListMahasiswa from '../page/Dosen/ListMahasiswa';
 import PilihSoal from '../page/Dosen/PilihSoal';
 import HasilLatihan from '../page/Dosen/HasilLatihan';
 import MenuAwalMahasiswa from '../page/Mahasiswa/MenuAwalMahasiswa';
-import { View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import SoalMahasiswa from '../page/Mahasiswa/SoalMahasiswa';
 import IsiSoal from '../page/Mahasiswa/IsiSoal';
 import ListDosen from '../page/Mahasiswa/ListDosen';
 import TambahDosen from '../page/Mahasiswa/TambahDosen';
+import ListDetailSoal from '../page/Mahasiswa/ListDetailSoal';
+import HasilLatihanPribadi from '../page/Mahasiswa/HasilLatihanPribadi';
 
 const Drawer = createDrawerNavigator();
+var data={};
+var url ="";
 
+const CustomDrawer = props =>{
+  return (
+    <DrawerContentScrollView {...props}>
+      <View
+        style={{ 
+          flexDirection:"row",
+          justifyContent:"space-between",
+          alignItems: "center",
+          padding:20,
+          backgroundColor:"#f6f6f6",
+          marginBottom:20,
+          
+         }}
+      >
+        <View>
+          <Text style={{ textTransform: 'uppercase'}}>{data.nama}</Text>
+          <Text>{data.role === "dosen"?"NIDN:"+data.iduser:"NIM:"+data.iduser}</Text>
+        </View>
+        <Image style={{width:60,height:60, borderRadius:30}}
+          source={{uri:url+'/user-photo/'+data.fotouser}}
+        />
+      </View>
+      <DrawerItemList {...props}/>
+    </DrawerContentScrollView>
+  )
+}
 export class DrawerList extends Component {
+  componentDidUpdate(){
+    data = this.props.dataUser
+    url=this.props.baseURL
+  }
     render() {
         return (
             <Drawer.Navigator
+                drawerContent={(props)=><CustomDrawer {...props}/>}
                 initialRouteName="Apps Launched"
             >
                 <Drawer.Screen 
@@ -31,7 +66,7 @@ export class DrawerList extends Component {
                   name="Apps Launched" 
                   component={Router} />
 
-                {this.props.role === "dosen"?(
+                {this.props.dataUser.role === "dosen"?(
                   <>
                   {/* START DOSEN MENU  */}
                     <Drawer.Screen 
@@ -129,6 +164,24 @@ export class DrawerList extends Component {
                         options={{headerShown: true,
                             
                             drawerItemStyle:{ height: 0 },
+                            headerTitle:"List Detail Soal",
+                            swipeEnabled:true}}
+                        name="List Detail Soal" 
+                        component={ListDetailSoal} />
+                        
+                      <Drawer.Screen 
+                        options={{headerShown: true,
+                            
+                            drawerItemStyle:{ height: 0 },
+                            headerTitle:"Hasil Latihan",
+                            swipeEnabled:true}}
+                        name="Hasil Latihan Pribadi" 
+                        component={HasilLatihanPribadi} />
+
+                      <Drawer.Screen 
+                        options={{headerShown: true,
+                            
+                            drawerItemStyle:{ height: 0 },
                             headerTitle:"Tambah Dosen",
                             swipeEnabled:true}}
                         name="Tambah Dosen" 
@@ -165,11 +218,12 @@ export class DrawerList extends Component {
 
 const mapStateToProps = (state) => ({
     
-    role:state.LoginReducer.role
+    dataUser:state.LoginReducer,
+    baseURL:state.URLReducer.url
 })
 
 const mapDispatchToProps = {
     
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawerList)
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerList,CustomDrawer)

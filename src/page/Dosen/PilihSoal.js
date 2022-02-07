@@ -12,7 +12,8 @@ export class PilihSoal extends Component {
         this.state = {
             dataSoal:[],
             // mahasiswa:{},
-            hasilLatihan:{}
+            hasilLatihan:{},
+            score:0
         }
     }
 
@@ -21,7 +22,7 @@ export class PilihSoal extends Component {
         BackHandler.removeEventListener('hardwareBackPress',()=>{
             this.setState({
                 dataSoal:[],
-                // mahasiswa:{},
+                score:0,
                 hasilLatihan:{}
             })
             this.props.navigation.reset({
@@ -40,8 +41,8 @@ export class PilihSoal extends Component {
         BackHandler.addEventListener('hardwareBackPress',()=>{
             this.setState({
                 dataSoal:[],
-                mahasiswa:{},
-                hasilLatihan:{}
+                hasilLatihan:{},
+                score:0
             })
             
             this.props.navigation.reset({
@@ -61,11 +62,19 @@ export class PilihSoal extends Component {
         .then((response)=>{
             let data =response.data
             this.setState({hasilLatihan:data})
+            let pengurangan = 100/data.length
+            let nilai = 100 
             for (let index = 0; index < data.length; index++) {
+                if(data[index].status === "ERROR"){
+                    nilai -= pengurangan
+                }
                 this.setState({
                     dataSoal:[...this.state.dataSoal,data[index].idSoal]
                 })
             }
+            this.setState({
+                score:nilai.toFixed(2)
+            })
             // console.log(this.state.dataSoal)
         })
         .catch((error)=>{
@@ -79,6 +88,7 @@ export class PilihSoal extends Component {
                     <Text style={{marginTop:20,fontSize:30,alignSelf:'center'}}> {this.props.route.params.mahasiswa.namaMahasiswa} </Text>
                     <Text style={{color:"#9D9D9D",fontSize:20,alignSelf:'center'}}> ID : {this.props.route.params.mahasiswa.idMahasiswa} </Text>
                     
+                    <Text style={{marginTop:20,marginLeft:30,fontSize:15}}> HASIL NILAI : {this.state.score} </Text>
                     <FlatList
                         data={this.state.hasilLatihan}
                         keyExtractor={item=>item.idHasil}

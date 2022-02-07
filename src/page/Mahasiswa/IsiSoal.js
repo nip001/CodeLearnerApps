@@ -65,13 +65,22 @@ export class IsiSoal extends Component {
         .then((response)=>{
             let data =response.data
             if(data.toString().includes(this.state.dataSoal.jawaban)){
+                console.log("ini berhasil")
+                if(this.state.dataCode.includes("PRINT \"")){
+                    this.setState({showNotif:true,textNotif:data.substring(0,data.length-1),textColor:"#D6E5FA"})
+                }else{
                     this.setState({showNotif:true,textNotif:data,textColor:"#D6E5FA"})
+                }
             }else{
-                console.log(data)
                 if(data.toString().includes("Error")){
                     this.setState({showNotif:true,textNotif:data,textColor:"#F47174"})
                 }else{
-                    this.setState({showNotif:true,textNotif:data,textColor:"#EEEE9B"})
+                    console.log("ini gagal")
+                    if(this.state.dataCode.includes("PRINT \"")){
+                        this.setState({showNotif:true,textNotif:data.substring(0,data.length-1),textColor:"#EEEE9B"})
+                    }else{
+                        this.setState({showNotif:true,textNotif:data,textColor:"#EEEE9B"})
+                    }
                 }
             }
         })
@@ -81,12 +90,12 @@ export class IsiSoal extends Component {
     }
 
     hasilLatihanHandler(){
-        
+        // console.log(this.state.textNotif)
         axios.post(this.props.baseURL+'/hasillatihan/',{
             idSoal:{
                 idSoal:this.state.dataSoal.idSoal
             },
-            jawabanMahasiswa:this.state.textNotif.substring(0,this.state.textNotif.length-1),
+            jawabanMahasiswa:this.state.textNotif,
             hasilCode:this.state.dataCode
         },
         {
@@ -94,7 +103,7 @@ export class IsiSoal extends Component {
         })
         .then((response)=>{
             let data =response.data
-            alert(data)
+            alert("Berhasil menyimpan hasil jawaban")
             this.props.navigation.reset({
                 index: 0,
                 routes: [{ name: 'Menu Awal Mahasiswa' }],
