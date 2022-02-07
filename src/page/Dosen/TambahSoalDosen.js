@@ -14,6 +14,7 @@ export class TambahSoalDosen extends Component {
             judul:"",
             deskripsi:"",
             output:"",
+            kelas:"",
         }
     }
 
@@ -32,13 +33,14 @@ export class TambahSoalDosen extends Component {
         axios.post(this.props.baseURL+'/soal/',{
             judulSoal:this.state.judul,
             deskripsiSoal:this.state.deskripsi,
-            jawaban:this.state.output
+            jawaban:this.state.output,
+            kelas:this.state.kelas
         },
         {
             headers: { Authorization: `Bearer ${this.props.token}` }
         },
         ).then((response)=>{
-            alert(response.data.message);
+            alert("Berhasil tambahkan data");
             this.props.navigation.reset({
                 index: 0,
                 routes: [{ name: 'Soal Dosen' }],
@@ -49,6 +51,12 @@ export class TambahSoalDosen extends Component {
     render() {
         return (
             <View>
+                <Text style={stylesEksternal.textStyleInput}>Kelas :</Text>
+                <TextInput
+                    style={stylesEksternal.input}
+                    placeholder="masukan kelas"
+                    onChangeText={(value)=>{this.setState({kelas:value})}}
+                />
                 <Text style={stylesEksternal.textStyleInput}>Judul Soal :</Text>
                 <TextInput
                     style={stylesEksternal.input}

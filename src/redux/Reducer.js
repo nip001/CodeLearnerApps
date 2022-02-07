@@ -2,6 +2,9 @@ import { combineReducers } from "redux"
 
 const stateUser = {
     username:"",
+    nama:"",
+    iduser:"",
+    fotouser:"",
     token:"",
     role:""
 }
@@ -12,7 +15,7 @@ const stateDataRefresh = {
 }
 
 const baseUrlBE = {
-    url:"http://5cda-139-192-156-157.ngrok.io",
+    url:"http://5f28-139-192-156-157.ngrok.io",
 }
 
 function LoginReducer(state=stateUser,action){
