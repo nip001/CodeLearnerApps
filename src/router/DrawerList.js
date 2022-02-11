@@ -164,7 +164,7 @@ export class DrawerList extends Component {
                         options={{headerShown: true,
                             
                             drawerItemStyle:{ height: 0 },
-                            headerTitle:"List Detail Soal",
+                            headerTitle:"History Soal",
                             swipeEnabled:true}}
                         name="List Detail Soal" 
                         component={ListDetailSoal} />

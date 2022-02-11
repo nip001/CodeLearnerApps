@@ -15,7 +15,7 @@ const stateDataRefresh = {
 }
 
 const baseUrlBE = {
-    url:"http://5f28-139-192-156-157.ngrok.io",
+    url:"http://a9cd-139-192-156-157.ngrok.io",
 }
 
 function LoginReducer(state=stateUser,action){
